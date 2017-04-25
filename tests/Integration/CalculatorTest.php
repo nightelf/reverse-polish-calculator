@@ -3,11 +3,14 @@
 namespace Integration;
 
 use PHPUnit\Framework\TestCase,
-    ReversePolishCalculator\Calculator,
+    ReversePolishCalculator\Operator,
     ReversePolishCalculator\CalculatorBuilder;
 
+/**
+ * Class CalculatorTest
+ * @package Integration
+ */
 class CalculatorTest extends TestCase {
-
 
     /**
      * @param float[] $stack
@@ -15,7 +18,7 @@ class CalculatorTest extends TestCase {
      * @param float $expectedResult
      * @dataProvider operationsDataProvider
      */
-    public function testAll($stack, $operators, $expectedResult) {
+    public function testOperations($stack, $operators, $expectedResult) {
 
         $calculator = CalculatorBuilder::buildCalculator();
 
@@ -49,6 +52,49 @@ class CalculatorTest extends TestCase {
             [ 'stack' => [3, 9, 5], 'operators' => ['-', '**'], 'expectedResult' => 81 ],  // complex
             [ 'stack' => [32, 2, 3], 'operators' => ['**', '/'], 'expectedResult' => 4 ],  // complex
             [ 'stack' => [100, 55, 5], 'operators' => ['-', 'i', '*'], 'expectedResult' => 2 ],  // complex
+        ];
+    }
+
+    /**
+     * @param float[] $stack
+     * @param string[] $operators
+     * @param float $expectedError
+     * @dataProvider errorMessageDataProvider
+     */
+    public function testException($stack, $operators, $expectedError) {
+
+        $calculator = CalculatorBuilder::buildCalculator();
+
+        // add items to the stack
+        foreach($stack as $number) {
+            $calculator->push($number);
+        }
+
+        $this->expectException(\Exception::class);
+        try {
+            // perform operations
+            foreach ($operators as $operator) {
+                $calculator->performOperation($operator);
+            }
+            $this->fail('Should have thrown an exception');
+        } catch (Exception $e) {
+            $this->assertContains($expectedError, $e->getMessage()); // Exception occurred
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function errorMessageDataProvider() {
+        return [
+            [ 'stack' => [5], 'operators' => ['+'], 'expectedError' => Operator\Add::DOMAIN_ERROR_INVALID_STACK ],  // addition
+            [ 'stack' => [5], 'operators' => ['-'], 'expectedError' => Operator\Subtract::DOMAIN_ERROR_INVALID_STACK ],  // subtraction
+            [ 'stack' => [5], 'operators' => ['*'], 'expectedError' => Operator\Multiply::DOMAIN_ERROR_INVALID_STACK ],  // multiplication
+            [ 'stack' => [42], 'operators' => ['/'], 'expectedError' => Operator\Divide::DOMAIN_ERROR_INVALID_STACK ],  // division
+            [ 'stack' => [42, 0], 'operators' => ['/'], 'expectedError' => Operator\Divide::RANGE_ERROR_INVALID_NUMBER ],  // division
+            [ 'stack' => [], 'operators' => ['i'], 'expectedError' => Operator\Inverse::DOMAIN_ERROR_INVALID_STACK ],  // inverse
+            [ 'stack' => [0], 'operators' => ['i'], 'expectedError' => Operator\Inverse::RANGE_ERROR_INVALID_NUMBER ],  // inverse
+            [ 'stack' => [2], 'operators' => ['**'], 'expectedError' => Operator\Exponent::DOMAIN_ERROR_INVALID_STACK ],  // exponent
         ];
     }
 }

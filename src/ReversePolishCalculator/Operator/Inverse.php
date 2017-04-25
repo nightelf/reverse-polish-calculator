@@ -17,6 +17,11 @@ class Inverse extends UnaryOperatorAbstract {
     const RANGE_ERROR_INVALID_NUMBER = "Cannot take the inverse of zero";
 
     /**
+     * @var string
+     */
+    const INVERSE_OFFSET = 0;
+
+    /**
      * @param Calculator $calculator
      * @return float
      */
@@ -39,7 +44,7 @@ class Inverse extends UnaryOperatorAbstract {
     public function validate(Calculator $calculator) : array {
 
         $errors = parent::validate($calculator);
-        $stackTop = $calculator->peek(0);
+        $stackTop = $calculator->peek(self::INVERSE_OFFSET);
         if (null !== $stackTop && $stackTop == 0) {
             $errors[] = static::RANGE_ERROR_INVALID_NUMBER;
         }

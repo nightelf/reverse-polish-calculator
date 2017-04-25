@@ -17,6 +17,11 @@ class Divide extends BinaryOperatorAbstract {
     const RANGE_ERROR_INVALID_NUMBER = "Cannot divide by zero";
 
     /**
+     * @var string
+     */
+    const DIVISOR_OFFSET = 0;
+
+    /**
      * @param Calculator $calculator
      * @return float
      */
@@ -39,7 +44,7 @@ class Divide extends BinaryOperatorAbstract {
     public function validate(Calculator $calculator) : array {
 
         $errors = parent::validate($calculator);
-        $stackTop = $calculator->peek(1);
+        $stackTop = $calculator->peek(self::DIVISOR_OFFSET);
         if (null !== $stackTop && $stackTop == 0) {
             $errors[] = static::RANGE_ERROR_INVALID_NUMBER;
         }

@@ -27,7 +27,7 @@ class Calculator {
      * Calculator constructor.
      */
     public function __construct() {
-        $this->stack = new SplStack();
+        $this->clear();
     }
 
     /**
@@ -64,6 +64,14 @@ class Calculator {
     }
 
     /**
+     * Clear the stack contents
+     */
+    public function clear() {
+        unset($this->stack);
+        $this->stack = new SplStack();
+    }
+
+    /**
      * @param string $operator
      * @return float
      * @throws Exception
@@ -83,7 +91,7 @@ class Calculator {
     }
 
     /**
-     * @param OperatorAbstract $operator
+     * @param OperatorInterface $operator
      */
     public function registerOperator(OperatorInterface $operator) {
         $this->operators[$operator->getOperator()] = $operator;
