@@ -1,0 +1,17 @@
+{
+    "name": "jkuemmerle/reversepolishcalc",
+    "description": "A Reverse Polish Calculator",
+    "authors": [
+        {
+            "name": "nightelf",
+            "email": "jared.kuemmerle@yahoo.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^6.1"
+    }
+}
