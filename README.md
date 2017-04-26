@@ -7,8 +7,8 @@ A command line reverse polish calculator
 * PHPUnit
 
 ## Command line instructions:
+#### Run these commands from the repository root directory:
 1. composer update
 2. phpunit
 3. php run.php
 
-#### Project is not finished yet. Please wait. I need to add a few items.

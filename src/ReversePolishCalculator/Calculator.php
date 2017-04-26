@@ -72,6 +72,17 @@ class Calculator {
     }
 
     /**
+     * Clear the stack contents
+     */
+    public function getStack() {
+        $items = [];
+        foreach ($this->stack as $item) {
+            $items[] = $item;
+        }
+        return $items;
+    }
+
+    /**
      * @param string $operator
      * @return float
      * @throws Exception
