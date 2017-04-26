@@ -97,4 +97,37 @@ class CalculatorTest extends TestCase {
             [ 'stack' => [2], 'operators' => ['**'], 'expectedError' => Operator\Exponent::DOMAIN_ERROR_INVALID_STACK ],  // exponent
         ];
     }
+
+    /**
+     * @param array $sequentialNumbersAndOperators
+     * @param float $expectedResult
+     * @dataProvider crazySequenceDataProvider
+     */
+    public function testCrazySequence($sequentialNumbersAndOperators, $expectedResult) {
+
+        $calculator = CalculatorBuilder::buildCalculator();
+
+        // add items to the stack
+        $result = null;
+        foreach($sequentialNumbersAndOperators as $item) {
+
+            if ($calculator->isOperator($item)) {
+                $result = $calculator->performOperation($item);
+            } else {
+                $calculator->push($item);
+            }
+        }
+        $this->assertEquals($expectedResult, $result);
+
+    }
+
+    /**
+     * @return array
+     */
+    public function crazySequenceDataProvider() {
+        return [
+            [ 'sequentialNumbersAndOperators' => [ 5,  1, 2, '+', 4, '*', '+', 3, '-' ], 'expectedResult' => 14 ],  // from https://en.wikipedia.org/wiki/Reverse_Polish_notation
+            [ 'sequentialNumbersAndOperators' => [ 5,  1, 2, '**', 4, 'i', '*', 3, '-', '+' ], 'expectedResult' => 2.25 ],
+        ];
+    }
 }
