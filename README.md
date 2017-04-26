@@ -22,3 +22,8 @@ Clone the repository and run these commands from the repository root directory:
 * / : divide
 * ** : exponent
 * i : inverse
+
+## Output:
+* Errors appear in red text
+* Successful calculations appear in green text
+* Info appears in light-blue text
